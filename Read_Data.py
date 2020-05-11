@@ -76,6 +76,7 @@ train.Sex = feature_replace(train, 'Sex', sex_dict)
 #Replace C = 1, Q = 2, S = 3 in 'Embarked' column
 embark_dict = {'C' : 1, 'Q' : 2, 'S':3}
 train.Embarked = feature_replace(train, 'Embarked', embark_dict)
+#NOTE: ONE HOT ENCODING MAY BE REQUIRED FOR THIS VARIABLE. IT IS NOT ADDRESSED HERE BUT MAY BE ON ANOTHER BRANCH
 
 # ------------------- Assess Correlations ---------------------------------------
 
