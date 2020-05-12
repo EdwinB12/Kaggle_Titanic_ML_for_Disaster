@@ -89,7 +89,6 @@ print(corr_matrix['Survived'].sort_values(ascending=False))
 
 
 # Write train directory into pickle format for further use in later files
-
 with open('Pickled_Files/train_df_S1.txt', 'wb') as myFile:
     pickle.dump(train, myFile)
 
