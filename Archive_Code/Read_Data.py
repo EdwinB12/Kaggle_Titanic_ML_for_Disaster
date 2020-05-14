@@ -70,9 +70,11 @@ def feature_replace(df,feature,f_dict):
 # Read in dataframe
 train = read_train()
 train_orig = train.copy()
+
 # Replace Male with 1 and Female with 2 in 'Sex' column.
 sex_dict = {'male' : 1, 'female' : 2}  
 train.Sex = feature_replace(train, 'Sex', sex_dict)
+
 #Replace C = 1, Q = 2, S = 3 in 'Embarked' column
 embark_dict = {'C' : 1, 'Q' : 2, 'S':3}
 train.Embarked = feature_replace(train, 'Embarked', embark_dict)
@@ -95,6 +97,25 @@ with open('Pickled_Files/train_df_S1.txt', 'wb') as myFile:
 #with open('Pickled_Files/train_df_S1.txt', 'rb') as myFile:
     #train_df_TEST = pickle.load(myFile)
 
+#%% Test Data
+
+def read_test(): 
+    test_set = pd.read_csv('Original_Data/test.csv')
+    return test_set
+
+# Read Test set
+test_set = read_test()
+
+# Replace Male with 1 and Female with 2 in 'Sex' column.
+sex_dict = {'male' : 1, 'female' : 2}  
+test_set.Sex = feature_replace(test_set, 'Sex', sex_dict)
+
+#Replace C = 1, Q = 2, S = 3 in 'Embarked' column
+embark_dict = {'C' : 1, 'Q' : 2, 'S':3}
+test_set.Embarked = feature_replace(test_set, 'Embarked', embark_dict)
+
+Initial_Data_QC(test_set)
+    
 #%% Finish
     
 print('\n') 

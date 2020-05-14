@@ -12,6 +12,7 @@ Document Objective: Remove NaNs, feature engineering and prepare input into ML.
 """
 
 #%% ------------- Packages and start of script ----------------
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt 
@@ -23,6 +24,7 @@ print('\n')
 print('--------------- Start --------------------')
 print('\n' '\n')
 start=time.time()
+
 #%%
 
 with open('Pickled_Files/train_df_S1.txt', 'rb') as myFile:
@@ -39,6 +41,7 @@ train_df_S1 = train_df.copy() #Saving off unedited version for future comparison
 train_df = train_df.drop(['Name', 'Ticket', 'Cabin'], axis=1)
 
 # ----------------- Dealing with NaNs ----------------------
+
 # 'Age' feature is missing 177 instances. Is there a correlation to Survival if you remove NaNs?  
 train_df_tmp = train_df.dropna(subset = ['Age']) # Remove instances with NaNs and write to temp dataframe
 corr_matrix = train_df_tmp.corr()
