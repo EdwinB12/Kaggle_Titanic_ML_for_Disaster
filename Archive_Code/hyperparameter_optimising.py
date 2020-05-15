@@ -32,7 +32,7 @@ start=time.time()
 #%% 
 
 # Loading in S2 dataframe - no feature scaling
-with open('Pickled_Files/train_df_S2.txt', 'rb') as myFile:
+with open('C:\\Users\\edwin\\OneDrive\\Documents\\Machine_Learning\\Git_Repos\\Kaggle_Titanic_ML_for_Disaster\\Pickled_Files\\train_df_S2.txt', 'rb') as myFile:
     train_df_S2 = pickle.load(myFile)
     
 # Assigning training and target features to seperate numpy arrays

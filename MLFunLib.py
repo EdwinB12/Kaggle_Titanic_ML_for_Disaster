@@ -96,17 +96,20 @@ def Full_PipeLine(path, feature_list, target_list,  num_pipe, cat_pipe):
     #Assigning feature labels to numeric and categoric based on dtypes
     numeric_features = train_features.select_dtypes(include=['int64','float64']).columns
     categoric_features = train_features.select_dtypes(include=['object']).columns
-
+    
     # Combining seperate pipes into full pipeline
     full_pipeline = ColumnTransformer([
         ('num' , num_pipe,numeric_features), # Apply numeric pipeline to numeric features
         ('cat', cat_pipe, categoric_features), # Apply categoric pipeline to numeric features
     ])
     
-    return full_pipeline, train_features, target_features
+    # Creating list of output features in the order they will appear after transformation 
+    post_trans_feature_list = np.concatenate([numeric_features,categoric_features])
+    return full_pipeline, train_features, target_features, post_trans_feature_list
 
 #--------------------------------------------------------------------------------------------------
-# -------------------------------- Saved CSV for Kaggle Submission -----------------------------------------
+    
+# -------------------------------- Saved CSV for Kaggle Submission --------------------------------
 
 # Function preparing predictons for Kaggle Submission 
 def Pred_to_Kaggle_Format(predictions,csv_path):
