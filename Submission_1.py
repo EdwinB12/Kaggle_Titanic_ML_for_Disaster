@@ -27,20 +27,26 @@ Things to try for future submissions:
 """
 
 
-# ------------------ Packages and start of script ----------------------------
+# ------------------ Import Packages ----------------------
 
+import matplotlib.pyplot as plt
+from sklearn.linear_model import SGDClassifier, LogisticRegression
 import time
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score, learning_curve, GridSearchCV
 from sklearn.svm import SVC
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, OrdinalEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 import MLFunLib as mlib # Custom made library
+from sklearn.tree import DecisionTreeClassifier, export_graphviz 
+import pydot
 
 print('\n')
 print('--------------- Start --------------------')
 print('\n' '\n')
 start=time.time()
+
+
 
 # -------------------- Executing Pipeline on training data -------------------
 
@@ -63,10 +69,12 @@ cat_pipe = Pipeline([
 ])
 
 #Combinin Pipes into full pipeline 
-full_pipeline,train_features,target_features = mlib.Full_PipeLine(path,feature_list,target_list,num_pipe, cat_pipe)
+full_pipeline,train_features,target_features,post_trans_train_feature = mlib.Full_PipeLine(path,feature_list,target_list,num_pipe, cat_pipe)
 
 # Transform data using final combined pipeline
 train_features_prep = full_pipeline.fit_transform(train_features)
+
+
 
 # -------------------- Executing Pipeline on test data -----------------------
 
@@ -74,10 +82,12 @@ train_features_prep = full_pipeline.fit_transform(train_features)
 path = 'Original_Data/test.csv'
 test_original = mlib.csv_to_df(path)
 target_list = []
-full_pipeline,test_features,empty = mlib.Full_PipeLine(path,feature_list,target_list,num_pipe, cat_pipe)
+full_pipeline,test_features,empty,post_trans_test_feature = mlib.Full_PipeLine(path,feature_list,target_list,num_pipe, cat_pipe)
 
 # Transform data using final combined pipeline
 test_features_prep = full_pipeline.fit_transform(test_features)
+
+
 
 # -------------------------- SVM classifier rbf ------------------------------
 
@@ -87,17 +97,33 @@ svm_clf_rbf_C100 = SVC(kernel='rbf',C=100)
 # Fit SVM to data
 svm_clf_rbf_C100.fit(train_features_prep,target_features)
 
+
+
+# -------------------------- Cross Validation ------------------------------
+
 # 10 fold cross validation and print scores
-cvs = cross_val_score(svm_clf_rbf_C100,train_features_prep,target_features ,cv=10)
+cvs = cross_val_score(svm_clf_rbf_C100,train_features_prep,target_features ,cv=5)
 print(sorted(cvs,reverse=True))
+
+
+
+# ----------------- Plotting Learning Curve for best result -------------------
+
+# Plotting Learning Curve
+fig,ax = plt.subplots()
+ax.set_title('Submission 1 - SVM Learning Curve')
+ax.set_ylim(0.6,1.02)
+ax.set_xlim(0,720)
+mlib.plot_learning_curve(svm_clf_rbf_C100, train_features_prep, target_features, 'accuracy', 5, ax)
+
+
+
+# ---------------- Predicting on test data and save submission ---------------
 
 # Predict on prepared test dataset and write out to csv
 predictions=svm_clf_rbf_C100.predict(test_features_prep)
 mlib.Pred_to_Kaggle_Format(predictions,'Submissions/Submission_1.csv')
 
-# Plotting Learning Curve
-#fig,ax = plt.subplots()
-#plot_learning_curve(svm_clf_rbf_C100, train_features_prep, target_features, 'accuracy', 10, ax)
 
 
 # ------------------------ Finish --------------------------------------------
