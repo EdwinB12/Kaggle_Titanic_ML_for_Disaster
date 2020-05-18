@@ -14,6 +14,9 @@ import pandas as pd
 import numpy as np
 from sklearn.compose import ColumnTransformer
 from sklearn.model_selection import learning_curve
+from sklearn.decomposition import PCA
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # -------------------------------- Read csv files to dfs ------------------------------------------
 
@@ -122,6 +125,59 @@ def Pred_to_Kaggle_Format(predictions,csv_path):
 
 #---------------------------------------------------------------------------------------------------
     
+# ------------------------------ Scree plot --------------------------------------------------------
+
+def Scree_Plot(data,n_components=None):
+    
+    #Calculate PCA for user defined number of components
+    pca = PCA(n_components=n_components) 
+    pca.fit(data)
+
+    # setting variance ratios
+    y =  pca.explained_variance_ratio_
+    
+    # Creating string list of x-axis
+    x = list()
+    for i in range(1,(len(y)+1)):
+        x.append('PC' + str(i))
+        
+    # Plotting
+    fig,ax = plt.subplots()
+    ax.bar(x,y)
+    ax.set_title('Scree Plot')
+    ax.set_xlabel('Principal Components')
+    ax.set_ylabel('Variance Ratio')
+    ax.spines['right'].set_visible(False) # Removing right and top spines
+    ax.spines['top'].set_visible(False)
+    
+#---------------------------------------------------------------------------------------------------
+    
+#--------------------- Plot Principal Components Scatter Matrix ------------------------------------    
     
     
+def PC_CrossPlotting_Color(train_data,target_data,n_components=None): 
+
+    # Performing PCA on user defined train_data with user stated n_components
+    pca=PCA(n_components=n_components)
+    pca_values =  pca.fit_transform(train_data)
     
+    # Adding user defined target values to be used as 'hue'
+    hue_values = np.reshape(target_data,(len(target_data),1))
+    df_values = np.append(pca_values ,hue_values,axis=1)
+    
+    # Creating list of PC labels
+    x = list()
+    for i in range(1,(df_values.shape[1])):
+        x.append('PC' + str(i))
+    
+    #Adding the hue variable pandas column names at the end    
+    x.append('hue_var')
+    
+    # Creating df with the data and columns
+    df = pd.DataFrame(data =df_values, columns = x )
+    
+    # Plotting
+    sns.set(style="ticks")
+    sns.pairplot(df, hue='hue_var')
+   
+#----------------------------------------------------------------------------------------------------
