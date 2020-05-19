@@ -88,6 +88,37 @@ def plot_learning_curve(estimator,X,y,scoring,fold,ax):
 # -------------------------------- Combining Full PipeLine ----------------------------------------
 
 def Full_PipeLine(path, feature_list, target_list,  num_pipe, cat_pipe):
+    '''
+    Takes data from given path, converts to df, splits into numerical or categorical feature
+    depending on dtype, combines given individual pipelines for num and cat data into a full 
+    pipeline. Outputs full pipeline, both training and target features (without the column headers),
+    and also a list of training feature columns. 
+
+    Parameters
+    ----------
+    path : string
+        Path pointing to data desired to be transformed by pipeline.
+    feature_list : String List
+        List of dataframe columns names corresponding to features.
+    target_list : String list
+        List of dataframe columns names corresponding to the target features..
+    num_pipe : PipeLine output
+        PipeLine for numnerical data.
+    cat_pipe : PipeLine output
+        Pipeline for categorical data.
+
+    Returns
+    -------
+    full_pipeline : Pipeline
+        Pipeline for fitting and transforming data.
+    train_features : Numpy array
+        Array of training features (no column headers).
+    target_features : Numpy array
+        Array of target feature (no column headers)..
+    post_trans_feature_list : List
+        List of training features column headers.
+
+    '''
     
     # Read in data
     df = csv_to_df(path)
@@ -108,6 +139,7 @@ def Full_PipeLine(path, feature_list, target_list,  num_pipe, cat_pipe):
     
     # Creating list of output features in the order they will appear after transformation 
     post_trans_feature_list = np.concatenate([numeric_features,categoric_features])
+    
     return full_pipeline, train_features, target_features, post_trans_feature_list
 
 #--------------------------------------------------------------------------------------------------
@@ -116,11 +148,24 @@ def Full_PipeLine(path, feature_list, target_list,  num_pipe, cat_pipe):
 
 # Function preparing predictons for Kaggle Submission 
 def Pred_to_Kaggle_Format(predictions,csv_path):
+    '''
+    Function to write predictions for the Kaggle Titanic dataset in correct csv format. 
+    
+    Parameters
+    ----------
+    predictions : 1D array
+        Array of predicitons with no column headers. Should be 1s or 0s only. 
+    csv_path : string
+        Destination and name of csv file to output.
 
+    '''
+    
+    # Take passanger ID from original test dataset and flatten
     df = pd.read_csv('Original_Data/test.csv')
     pass_id = df['PassengerId'].to_numpy().ravel()
+    
+    # Create new dataframe with passengerID and Survived Columns
     pred_df = pd.DataFrame({'PassengerId' : pass_id, 'Survived' : predictions})
-    #pred_df['Survived'] = predictions
     pred_df.to_csv(csv_path,index=False)
 
 #---------------------------------------------------------------------------------------------------
@@ -128,7 +173,17 @@ def Pred_to_Kaggle_Format(predictions,csv_path):
 # ------------------------------ Scree plot --------------------------------------------------------
 
 def Scree_Plot(data,n_components=None):
-    
+    '''
+    Plots scree plot of principal components and their respective variance ratios. 
+
+    Parameters
+    ----------
+    data : Array
+        Array of training data after prep - No columns labels.
+    n_components : int or float, optional
+        DESCRIPTION. The default is None. Check PCA n_components documentation. 
+
+    '''
     #Calculate PCA for user defined number of components
     pca = PCA(n_components=n_components) 
     pca.fit(data)
@@ -156,7 +211,21 @@ def Scree_Plot(data,n_components=None):
     
     
 def PC_CrossPlotting_Color(train_data,target_data,n_components=None): 
+    '''
+    Produces scatter matrix of principal components derived from the training data. 
+    The datapoints will be coloured by their respective target feature value. 
 
+    Parameters
+    ----------
+    train_data : Array
+        Train data after prep. No Dataframe or column labels. 
+    target_data : 1D Array
+        1D array of target feature values.
+    n_components : TYPE, optional
+        DESCRIPTION. The default is None. Check PCA n_components documentation.
+
+    '''
+    
     # Performing PCA on user defined train_data with user stated n_components
     pca=PCA(n_components=n_components)
     pca_values =  pca.fit_transform(train_data)
