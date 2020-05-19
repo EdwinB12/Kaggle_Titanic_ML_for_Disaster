@@ -87,17 +87,17 @@ def plot_learning_curve(estimator,X,y,scoring,fold,ax):
 
 # -------------------------------- Combining Full PipeLine ----------------------------------------
 
-def Full_PipeLine(path, feature_list, target_list,  num_pipe, cat_pipe):
+def Full_PipeLine(df, feature_list, target_list,  num_pipe, cat_pipe):
     '''
-    Takes data from given path, converts to df, splits into numerical or categorical feature
+    Takes data in df form, splits into numerical or categorical feature
     depending on dtype, combines given individual pipelines for num and cat data into a full 
     pipeline. Outputs full pipeline, both training and target features (without the column headers),
     and also a list of training feature columns. 
 
     Parameters
     ----------
-    path : string
-        Path pointing to data desired to be transformed by pipeline.
+    df : dataframe
+        dataframe containing data desired to be transformed by pipeline.
     feature_list : String List
         List of dataframe columns names corresponding to features.
     target_list : String list
@@ -120,8 +120,6 @@ def Full_PipeLine(path, feature_list, target_list,  num_pipe, cat_pipe):
 
     '''
     
-    # Read in data
-    df = csv_to_df(path)
     
     # Split df into training and target features. 
     train_features = df[feature_list]

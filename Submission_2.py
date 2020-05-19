@@ -87,7 +87,8 @@ cat_pipe = Pipeline([
 ])
 
 #Combinin Pipes into full pipeline 
-full_pipeline,train_features,target_features, post_transform_train_features = mlib.Full_PipeLine(path,feature_list,target_list,num_pipe, cat_pipe)
+full_pipeline,train_features,target_features, post_transform_train_features = mlib.Full_PipeLine(
+    train_original,feature_list,target_list,num_pipe, cat_pipe)
 
 # Transform data using final combined pipeline
 train_features_prep = full_pipeline.fit_transform(train_features)
@@ -101,7 +102,7 @@ train_features_prep = full_pipeline.fit_transform(train_features)
 path = 'Original_Data/test.csv'
 test_original = mlib.csv_to_df(path)
 target_list = []
-full_pipeline,test_features,empty,post_transform_test_features = mlib.Full_PipeLine(path,feature_list,target_list,num_pipe, cat_pipe)
+full_pipeline,test_features,empty,post_transform_test_features = mlib.Full_PipeLine(test_original,feature_list,target_list,num_pipe, cat_pipe)
 
 # Transform data using final combined pipeline
 test_features_prep = full_pipeline.fit_transform(test_features)
