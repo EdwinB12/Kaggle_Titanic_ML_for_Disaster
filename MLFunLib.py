@@ -248,3 +248,91 @@ def PC_CrossPlotting_Color(train_data,target_data,n_components=None):
     sns.pairplot(df, hue='hue_var')
    
 #----------------------------------------------------------------------------------------------------
+# --------------- Function to perform Feature Engineering on a dataframe ----------------------------
+    
+def Feature_Engineering(df): 
+    '''
+    Function to conveniently run feature engineering. 
+
+    Parameters
+    ----------
+    df : Pandas Dataframe
+        Input Pandas Dataframe directly from load.
+
+    Returns
+    -------
+    df : Pandas Dataframe
+        Data with feature engineering applied. This dataframe can now go into pipeline. 
+
+    '''
+    
+    # Drop Passenger ID and Cabin 
+    df = df.drop(['PassengerId','Ticket','Cabin'],axis=1)
+    
+    # ---------------- Create 'Title' feature and remove 'Name' ------------------
+    
+    # Extract Title from Name
+    df['Title'] = df.Name.str.extract(' ([A-Za-z]+)\.', expand=False)
+    
+    # Group any title that isn't Mr, MRs, Miss or Master in group 'other'. 1st correct some typos etc. 
+    df['Title'] = df['Title'].replace('Mlle', 'Miss')
+    df['Title'] = df['Title'].replace('Ms', 'Miss')
+    df['Title'] = df['Title'].replace('Mme', 'Mrs')
+    df['Title'] = df['Title'].replace(['Don', 'Rev', 'Dr', 'Mme', 'Ms',
+           'Major', 'Lady', 'Sir', 'Mlle', 'Col', 'Capt', 'Countess',
+           'Jonkheer'],'Other')
+    
+    # Remove Name Column
+    df = df.drop('Name',axis=1)
+    
+    # ----------------- Sorting Age into Brackets ----------------
+    
+    # Bin age into discrete values and look at mean survival
+    df['AgeBand'] = pd.cut(df['Age'], 5)
+    
+    # Define New Column AgeInt and assign values based on the Ageband analysis above. Remove Ageband.
+    df['AgeInt'] = df['Age']
+       
+    df.loc[ df['Age'] <= 16, 'AgeInt'] = 0
+    df.loc[(df['Age'] > 16) & (df['Age'] <= 32), 'AgeInt'] = 1
+    df.loc[(df['Age'] > 32) & (df['Age'] <= 48), 'AgeInt'] = 2
+    df.loc[(df['Age'] > 48) & (df['Age'] <= 64), 'AgeInt'] = 3
+    df.loc[df['Age'] > 64, 'AgeInt'] = 4
+    df = df.drop('AgeBand',axis=1)
+    
+    # ---------------- IsAlone Feature - 1 if alone, 0 if not -------------------------
+    
+    # Assign all rows 0 as IsAlone value. 
+    df['IsAlone'] = 0
+    
+    # Make IsAlone = 1 if SibSp and Parch both = 0
+    df.loc[(df['SibSp'] == 0) & (df['Parch'] <= 0), 'IsAlone'] = 1
+        
+    # ----------------------------- Fare Bands ----------------------------
+    
+    #df['FareBand'] = pd.cut(df['Fare'],50)
+    #df[['FareBand','Survived']].groupby['FareBand'].mean()
+    df.loc[ df['Fare'] <= 10, 'FareInt'] = 0
+    df.loc[(df['Fare'] > 10) & (df['Fare'] <= 30), 'FareInt'] = 1
+    df.loc[(df['Fare'] > 30) , 'FareInt'] = 2
+
+    return df
+
+
+#------------------------------------------------------------------------------------------
+# Function to plot mean survived value for each value of the variable (discrete data only)
+
+
+def Survive_av_plot(df,var): 
+    
+    count = 0
+    var_values = df[var].unique()
+    Sur_mean = np.empty([len(var_values)])
+    for i in var_values:
+        Sur_mean[count] = (df[df[var] == i].Survived).mean()
+        count=count+1
+    
+    plt.scatter(x=var_values,y = Sur_mean)
+    plt.ylim(0,1)
+    plt.title(var)
+
