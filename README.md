@@ -143,7 +143,7 @@ Learning curves for each submission can be found in the Figures Folder.
 
 ## Repository Layout
 
-- [Archive_Code](\Archive_Code) contains old code. Please don't expect these files to run without errors and these were not used for any submissions. 
+- [Archive_Code](/Archive_Code) contains old code. Please don't expect these files to run without errors and these were not used for any submissions. 
 
 - [Figures](\Figures) include pictures taken throughout the project. Hopefully these files are self explanatory. All the submissions learning curves can be found in the [Learning_Curve](Figures/Learning_Curve) folder. Pictures of the decision trees made in [submission 2](Submission_2) and [submission 7](Submission_6_7_8) can be found in [Learning_Curve](Figures/Decision_Tree_Diagrams). 
 
