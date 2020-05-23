@@ -61,16 +61,17 @@ from sklearn.ensemble import VotingClassifier, RandomForestClassifier, ExtraTree
 
 # Custom 
 import MLFunLib as mlib # Custom made library
-#%%
+
+
 print('\n')
 print('--------------- Start --------------------')
 print('\n' '\n')
 start=time.time()
 
+
 # --------------- Data Read, Feature Engineering and data prep for training ---------------------
 
 # Read Train and Test Datasets and save off original copies
-
 train_path = 'Original_Data/train.csv'
 train_original = pd.read_csv(train_path)
 train_df = train_original.copy()
@@ -78,6 +79,7 @@ test_path = 'Original_Data/test.csv'
 test_original = pd.read_csv(test_path)
 test_df = test_original.copy()
 
+# Feature Engineering 
 train_df = mlib.Feature_Engineering(train_df)
 test_df = mlib.Feature_Engineering(test_df)
 
@@ -99,11 +101,11 @@ cat_pipe = Pipeline([
     
 ])
 
-#Combining Pipes into full pipeline - Training Data
+# Combining Pipes into full pipeline - Training Data
 full_pipeline_train,train_features,target_features, post_transform_train_features = mlib.Full_PipeLine(
     train_df,feature_list,target_list,num_pipe, cat_pipe)
 
-#Combining Pipes into full pipeline - Test Data
+# Combining Pipes into full pipeline - Test Data
 full_pipeline_test,test_features,empty, post_transform_test_features = mlib.Full_PipeLine(
     test_df,feature_list,[],num_pipe,cat_pipe)
 
@@ -118,27 +120,27 @@ corr_df['Survived'] = target_features
 corr_matrix = corr_df.corr()
 print(corr_matrix['Survived'].sort_values(ascending=False))
 
-#%%
-# -------------------------------------------------------------------------------------------------
-# -------------------------------- Decision Tree and Random Forest -------------------------------------------------
 
-# Initialise training methods for boosting. Use grid searh parameters from Sub6,7,8. 
+# -------------------------------------------------------------------------------------------------
+# -------------------------------- Decision Tree and Random Forest --------------------------------
+
+# Initialise training methods for boosting. Using optimised parameters from Submissions 6,7,8
 
 # Decision Tree
 tree_clf = DecisionTreeClassifier(random_state=42,criterion='entropy',max_depth=10,
                                   min_samples_leaf=1,min_samples_split=5) 
 
-# Random Forest
-rfc = RandomForestClassifier(random_state=42,max_depth = 5,
-                             max_leaf_nodes = 16,min_samples_leaf=1,n_estimators=400)
-
-# Decision Tree
+# Decision Tree cross validation score 
 tree_clf.fit(train_features_prep,target_features)
 print('\n','tree_clf CVS score:' , np.mean(cross_val_score(tree_clf, train_features_prep,target_features,cv=5,
                 scoring = 'accuracy')))
 print('Decision Tree Done!','\n')
 
 # Random Forest
+rfc = RandomForestClassifier(random_state=42,max_depth = 5,
+                             max_leaf_nodes = 16,min_samples_leaf=1,n_estimators=400)
+
+# Random Forest cross validation score
 rfc.fit(train_features_prep,target_features)
 print('rfc CVS score:' , np.mean(cross_val_score(rfc, train_features_prep,target_features,cv=5,
                 scoring = 'accuracy')))
@@ -146,13 +148,12 @@ print('Random Forest Done!','\n')
 
 # Output features and their respective importance
 print('Feature Importance')
-
 for name,score in zip(post_transform_train_features,rfc.feature_importances_):
     print(name,score)
     
 
 
-#%% ---------------------------------- Ada Boosting ---------------------------------------------------------
+#---------------------------------- Ada Boosting ---------------------------------------------------------
 
 # AdaBoost classifier with decision trees (decision tree params same as random forest)
 ada_clf = AdaBoostClassifier(
@@ -161,24 +162,29 @@ ada_clf = AdaBoostClassifier(
     random_state=42
     )
 
+# Parameter grid used for original parameter search
 # param_grid_ada = [
 #     {'n_estimators':[400,600,800,1000], 'algorithm':['SAMME.R'],
 #      'learning_rate':[0.001,0.01,0.1,0.5,1,10]}]
 
+# Param grid with best parameters
 param_grid_ada_best = [
     {'algorithm': ['SAMME.R'], 'learning_rate': [0.01], 'n_estimators': [800]}
     ]
 
-# AdaBoost CVS 
+# AdaBoost Gridsearch 
 grid_Search_ada_best = GridSearchCV(ada_clf, param_grid_ada_best, cv=5, scoring = 'accuracy', return_train_score = True)
 grid_Search_ada_best.fit(train_features_prep,target_features)
 
+# Output best Cross Validation score and parameters from grid search
 print('\n') 
 print('Ada Best Params: ' , grid_Search_ada_best.best_params_) # {'algorithm': 'SAMME.R', 'learning_rate': 0.01, 'n_estimators': 800}
 print('Ada Best Score: ' , grid_Search_ada_best.best_score_ ) # 0.8159814198732033
 print('Ada Done!')
 
-#%% ---------------------------------- Gradient Boosting ---------------------------------------------------------
+
+
+# ---------------------------------- Gradient Boosting ---------------------------------------------------------
 
 grad_clf = GradientBoostingClassifier(
     random_state=42,max_depth = 5, max_leaf_nodes = 16,min_samples_leaf=1)
@@ -191,10 +197,11 @@ param_grid_grad_best = [
      'subsample':[1]}
     ]
 
-# AdaBoost CVS 
+# Gradient Boost Gridsearch 
 grid_search_grad_best = GridSearchCV(grad_clf, param_grid_grad_best, cv=5, scoring = 'accuracy', return_train_score = True)
 grid_search_grad_best.fit(train_features_prep,target_features)
 
+#Output best Cross Validation score and parameters from grid search
 print('\n') 
 print('Gradient Best Params: ' , grid_search_grad_best.best_params_)
 print('Gradient Best Score: ' , grid_search_grad_best.best_score_ )
@@ -202,35 +209,60 @@ print('Gradient Boosting Done!')
 
 
 
-#%%
 
-# --------------- Plotting Learning Curve for best result -----------------
-
-fig,[[ax1,ax2],[ax3,ax4]] = plt.subplots(2,2,sharex=True, sharey = True,figsize=(12,8))
-ax1.set_ylim(0.6,1.02)
-ax1.set_xlim(0,720)
-ax1.set_title('Decision Tree')
-ax2.set_title('Random Forest')
-ax3.set_title('Ada Boosting')
-ax4.set_title('Gradient Boosting')
+# --------------- Plotting Learning Curve: Ada Boost (Submission 9) only -----------------
+fig,ax = plt.subplots(figsize=(12,8))
+ax.set_ylim(0.6,1.02)
+ax.set_xlim(0,720)
+ax.set_title('Submission 9: Decision Tree - Ada Boost')
 mlib.plot_learning_curve(
-    tree_clf, train_features_prep, target_features, 'accuracy', 5, ax1)
-mlib.plot_learning_curve(
-    rfc, train_features_prep, target_features, 'accuracy', 5, ax2)
-mlib.plot_learning_curve(
-    grid_Search_ada_best.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax3)
-mlib.plot_learning_curve(
-    grid_search_grad_best.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax4)
+    grid_Search_ada_best.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax)
 
-#%% --------------- Predicting on test data and save submission -------------------------
 
-# Submission 9 - Ada Boost
-ada_predictions=grid_Search_ada_best.best_estimator_.predict(test_features_prep)
-mlib.Pred_to_Kaggle_Format(ada_predictions,'Submissions/Submission_9.csv')
 
-# Submission 10 - Gradient Boost
-grad_predictions=grid_search_grad_best.best_estimator_.predict(test_features_prep)
-mlib.Pred_to_Kaggle_Format(grad_predictions,'Submissions/Submission_10.csv')
+
+# --------------- Plotting Learning Curve: Gradient Boost (Submission 10) only -----------------
+fig,ax = plt.subplots(figsize=(12,8))
+ax.set_ylim(0.6,1.02)
+ax.set_xlim(0,720)
+ax.set_title('Submission 10: Decision Tree - Gradient Boost')
+mlib.plot_learning_curve(
+    grid_search_grad_best.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax)
+
+
+
+
+
+# --------------- Plotting Learning Curve Comparison - This may take a while and is hence turned off -----------------
+
+# fig3,[[ax1,ax2],[ax3,ax4]] = plt.subplots(2,2,sharex=True, sharey = True,figsize=(12,8))
+# ax1.set_ylim(0.6,1.02)
+# ax1.set_xlim(0,720)
+# ax1.set_title('Decision Tree')
+# ax2.set_title('Random Forest')
+# ax3.set_title('Decision Tree - Ada Boosting')
+# ax4.set_title('Decision Tree - Gradient Boosting')
+# mlib.plot_learning_curve(
+#     tree_clf, train_features_prep, target_features, 'accuracy', 5, ax1)
+# mlib.plot_learning_curve(
+#     rfc, train_features_prep, target_features, 'accuracy', 5, ax2)
+# mlib.plot_learning_curve(
+#     grid_Search_ada_best.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax3)
+# mlib.plot_learning_curve(
+#     grid_search_grad_best.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax4)
+
+
+
+#--------------- Predicting on test data and save submission -------------------------
+
+# # Submission 9 - Ada Boost
+# ada_predictions=grid_Search_ada_best.best_estimator_.predict(test_features_prep)
+# mlib.Pred_to_Kaggle_Format(ada_predictions,'Submissions/Submission_9.csv')
+
+# # Submission 10 - Gradient Boost
+# grad_predictions=grid_search_grad_best.best_estimator_.predict(test_features_prep)
+# mlib.Pred_to_Kaggle_Format(grad_predictions,'Submissions/Submission_10.csv')
+
 
 
 # ------------------------ Finish --------------------------------------------

@@ -86,6 +86,9 @@ train_df['IsAlone'] = 0
 
 # Make IsAlone = 1 if SibSp and Parch both = 0
 train_df.loc[(train_df['SibSp'] == 0) & (train_df['Parch'] <= 0), 'IsAlone'] = 1
+print(
+      train_df[['Survived', 'IsAlone']].groupby('IsAlone').mean(
+          ).sort_values(by='IsAlone', ascending = True))
     
 # ----------------------------- Fare Bands ----------------------------
 

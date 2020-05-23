@@ -57,20 +57,21 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder, OrdinalEncoder
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
-from sklearn.ensemble import VotingClassifier, RandomForestClassifier, ExtraTreesClassifier, AdaBoostClassifier
+from sklearn.ensemble import VotingClassifier, RandomForestClassifier, ExtraTreesClassifier, AdaBoostClassifier,GradientBoostingClassifier
 
 # Custom 
 import MLFunLib as mlib # Custom made library
+
 
 print('\n')
 print('--------------- Start --------------------')
 print('\n' '\n')
 start=time.time()
 
+
 # --------------- Data Read, Feature Engineering and data prep for training ---------------------
 
 # Read Train and Test Datasets and save off original copies
-
 train_path = 'Original_Data/train.csv'
 train_original = pd.read_csv(train_path)
 train_df = train_original.copy()
@@ -100,19 +101,20 @@ cat_pipe = Pipeline([
     
 ])
 
-#Combining Pipes into full pipeline - Training Data
+# Combining Pipes into full pipeline - Training Data
 full_pipeline_train,train_features,target_features, post_transform_train_features = mlib.Full_PipeLine(
     train_df,feature_list,target_list,num_pipe, cat_pipe)
 
-#Combining Pipes into full pipeline - Test Data
+# Combining Pipes into full pipeline - Test Data
 full_pipeline_test,test_features,empty, post_transform_test_features = mlib.Full_PipeLine(
     test_df,feature_list,[],num_pipe,cat_pipe)
 
 # Transform data using final combined pipeline
 train_features_prep = full_pipeline_train.fit_transform(train_features)
 test_features_prep = full_pipeline_train.fit_transform(test_features)
-mlib.Scree_Plot(train_features_prep)
-#%%
+
+
+
 # -------------------------------------------------------------------------------------------------
 # -------------------------------- Training -------------------------------------------------
 
@@ -128,17 +130,28 @@ tree_clf = DecisionTreeClassifier(random_state=42)
 rfc = RandomForestClassifier(random_state=42)
 
 # Setting up grid searches
-
 param_grid_svm = [
     {'kernel':['rbf','linear','poly'],'C':[0.1,1,10,100,1000],'degree':[3,4,5,10]}]
+
+# # Result of parameter search - Turn on if you want to skip param search
+# param_grid_svm = [
+#     {'C': 0.1, 'degree': 3, 'kernel': 'poly'}]
 
 param_grid_tree = [
     {'max_depth':[1,3,5,10,15,20,None],'min_samples_split':[2,5,10,20,40],
      'min_samples_leaf':[1,5,10],'criterion':['gini','entropy']}]
-    
+   
+# # Result of parameter search - Turn on if you want to skip param search
+# param_grid_tree = [
+#     {'criterion': 'entropy', 'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 5}]
+ 
 param_grid_rfc = [
     {'n_estimators':[100,200,400,600,800],'max_depth':[1,3,5,10,20,40],'min_samples_leaf':[1,5,10],
       'max_leaf_nodes': [None,8,16,32,64]}]   
+
+## Result of parameter search - Turn on if you want to skip param search - ADVISE TURNING ON AS THIS TAKES A WHILE. 
+# param_grid_rfc = [
+#     {'max_depth': 5, 'max_leaf_nodes': 16, 'min_samples_leaf': 1, 'n_estimators': 400}]  
 
 # SVM
 grid_search_svm = GridSearchCV(svm_clf, param_grid_svm, cv=5, scoring = 'accuracy', return_train_score = True)
@@ -166,9 +179,42 @@ print('\n')
 print('RFC Best Params: ' , grid_search_rfc.best_params_)
 print('RFC Best Score: ' , grid_search_rfc.best_score_ )
 
-#%%
 
-# --------------- Plotting Learning Curve for best result -----------------
+
+# --------------- Plotting Learning Curve: Submission 6 only  -----------------
+
+fig,ax = plt.subplots(figsize=(12,8))
+ax.set_ylim(0.6,1.02)
+ax.set_xlim(0,720)
+ax.set_title('Submission 6 - SVM')
+mlib.plot_learning_curve(
+    grid_search_svm.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax)
+
+
+
+# --------------- Plotting Learning Curve: Submission 7 only  -----------------
+
+fig,ax = plt.subplots(figsize=(12,8))
+ax.set_ylim(0.6,1.02)
+ax.set_xlim(0,720)
+ax.set_title('Submission 7 - Decision Tree')
+mlib.plot_learning_curve(
+    grid_search_tree.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax)
+
+
+
+# --------------- Plotting Learning Curve: Submission 8 only  -----------------
+
+fig,ax = plt.subplots(figsize=(12,8))
+ax.set_ylim(0.6,1.02)
+ax.set_xlim(0,720)
+ax.set_title('Submission 8 - Random Forest')
+mlib.plot_learning_curve(
+    grid_search_rfc.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax)
+
+
+
+# --------------- Plotting Learning Curve: Comparison  -----------------
 
 fig,[ax1,ax2,ax3] = plt.subplots(1,3,sharex=True, sharey = True,figsize=(12,8))
 ax1.set_ylim(0.6,1.02)
@@ -183,7 +229,9 @@ mlib.plot_learning_curve(
 mlib.plot_learning_curve(
     grid_search_rfc.best_estimator_, train_features_prep, target_features, 'accuracy', 5, ax3)
 
-#%% --------------- Predicting on test data and save submission -------------------------
+
+
+# --------------- Predicting on test data and save submission -------------------------
 
 # # Submission 6 - SVM
 # svm_predictions=grid_search_svm.best_estimator_.predict(test_features_prep)
@@ -196,6 +244,9 @@ mlib.plot_learning_curve(
 # # Submission 8 - Random Forest
 # rfc_predictions=grid_search_rfc.best_estimator_.predict(test_features_prep)
 # mlib.Pred_to_Kaggle_Format(rfc_predictions,'Submissions/Submission_8.csv')
+
+
+
 
 # ------------------------ Finish --------------------------------------------
     
