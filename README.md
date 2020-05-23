@@ -12,16 +12,15 @@ I used this project to practice my data handling skills in Python, aswell as gai
 * [Introduction to the Challenge](#introduction-to-the-challenge)
 * [Data](#data)
 * [My Approach](#my-approach)
-* [Data Prep](#data-prep)
-* [Prep 1](#prep-1)
-* [Local files](#local-files)
-* [Remote files](#remote-files)
-* [Multiple files](#multiple-files)
-* [Combo](#combo)
-* [Auto insert and update TOC](#auto-insert-and-update-toc)
-* [GitHub token](#github-token)
-* [Tests](#tests)
-* [Dependency](#dependency)
+  * [Data Prep](#data-prep)
+    * [Prep 1](#prep-1)
+    * [Prep 2](#prep-2)
+  * [Training and Evaluation](#training-and-evaluation)
+* [Submissions and Scores](#submissions-and-scores)
+* [Final Thoughts ](#final-thoughts)
+* [Author](#author)
+* [License](#license)
+* [Acknowledgments](#acknowledgments)
 <!--te-->
 
 ## Introduction to the Challenge
@@ -145,9 +144,9 @@ Learning curves for each submission can be found in the Figures Folder.
 
 - [Archive_Code](/Archive_Code) contains old code. Please don't expect these files to run without errors and these were not used for any submissions. 
 
-- [Figures](\Figures) include pictures taken throughout the project. Hopefully these files are self explanatory. All the submissions learning curves can be found in the [Learning_Curve](Figures/Learning_Curve) folder. Pictures of the decision trees made in [submission 2](Submission_2) and [submission 7](Submission_6_7_8) can be found in [Learning_Curve](Figures/Decision_Tree_Diagrams). 
+- [Figures](/Figures) include pictures taken throughout the project. Hopefully these files are self explanatory. All the submissions learning curves can be found in the [Learning_Curve](Figures/Learning_Curve) folder. Pictures of the decision trees made in [submission 2](Submission_2) and [submission 7](Submission_6_7_8) can be found in [Learning_Curve](Figures/Decision_Tree_Diagrams). 
 
-- [Original_Data](\Original_Data) contains the data downloaded from the Kaggle website (https://www.kaggle.com/c/titanic/data). This folder will have to be in the same relative position to the submissions files for the paths to work without editing. 
+- [Original_Data](/Original_Data) contains the data downloaded from the Kaggle website (https://www.kaggle.com/c/titanic/data). This folder will have to be in the same relative position to the submissions files for the paths to work without editing. 
 
 - [Submissions](\Submissions) contains the submission files submitted to the Kaggle competition. 10 files, one for each submission. 
 
@@ -155,7 +154,7 @@ Learning curves for each submission can be found in the Figures Folder.
 
 - [PCA.py](PCA.py) contains simple PCA of the data. This was not used in submission attempts.
 
-- 'Submission 1', 'Submission 2', etc. are the scripts run the generate my Kaggle submissions. They are constistently layed out and include a detailed description of what the file aims to accomplish. These files generate the submissions *.csv files found in [Submissions](\Submissions). The Submissions scripts call on functions stored in the [MLFunLib.py](MLFunLib.py) file.
+- 'Submission 1', 'Submission 2', etc. are the scripts run the generate my Kaggle submissions. They are constistently layed out and include a detailed description of what the file aims to accomplish. These files generate the submissions *.csv files found in [Submissions](/Submissions). The Submissions scripts call on functions stored in the [MLFunLib.py](MLFunLib.py) file.
 
 ## Final Thoughts 
 
