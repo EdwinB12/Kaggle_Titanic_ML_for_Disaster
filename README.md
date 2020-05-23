@@ -114,16 +114,16 @@ Learning curves for each submission can be found in the Figures Folder.
 
 |   | Data Prep  | Algorithm  | Cross Val Score  | Kaggle Score  |
 |:-:|---|---|---|---|
-| [Sub1](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_1.py)  | Prep 1 | SVM  | 0.788 | 0.75119 |
-| [Sub2](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_2.py)  | Prep 1 | Decision Tree  | 0.811 | 0.76555  |
-| [Sub3](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_3_4.py)  | Prep 1 | 'Hard' Voting Ensemble Model - Sub 1 & 2   |  0.801 | 0.75119  |
-| [Sub4](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_3_4.py)  | Prep 1 | 'Soft' Voting Ensemble Model - Sub 1 & 2  | 0.800  | 0.75598 |
-| [Sub5](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_5.py)  | Prep 1 | Random Forest |0.808 | 0.77511  |
-| [Sub6](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_6_7_8.py)  | Prep 2 | SVM | 0.811  | 0.78468  |
-| [Sub7](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_6_7_8.py)  | Prep 2 | Decision Tree | 0.822  | 0.77511   |
-| [Sub8](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_6_7_8.py)  | Prep 2 | Random Forest  | 0.818  | 0.78947  |
-| [Sub9](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_9_10.py)  | Prep 2 | Ada Boost - Decision Tree  | 0.816  | 0.72727  |
-| [Sub10](Kaggle_Titanic_ML_for_Disaster/blob/master/Submission_9_10.py) | Prep 2 | Gradient Boost - Decision Tree  | 0.828  | 0.78947  |
+| [Sub1](Submission_1.py)  | Prep 1 | SVM  | 0.788 | 0.75119 |
+| [Sub2](Submission_2.py)  | Prep 1 | Decision Tree  | 0.811 | 0.76555  |
+| [Sub3](Submission_3_4.py)  | Prep 1 | 'Hard' Voting Ensemble Model - Sub 1 & 2   |  0.801 | 0.75119  |
+| [Sub4](Submission_3_4.py)  | Prep 1 | 'Soft' Voting Ensemble Model - Sub 1 & 2  | 0.800  | 0.75598 |
+| [Sub5](Submission_5.py)  | Prep 1 | Random Forest |0.808 | 0.77511  |
+| [Sub6](Submission_6_7_8.py)  | Prep 2 | SVM | 0.811  | 0.78468  |
+| [Sub7](Submission_6_7_8.py)  | Prep 2 | Decision Tree | 0.822  | 0.77511   |
+| [Sub8](Submission_6_7_8.py)  | Prep 2 | Random Forest  | 0.818  | 0.78947  |
+| [Sub9](Submission_9_10.py)  | Prep 2 | Ada Boost - Decision Tree  | 0.816  | 0.72727  |
+| [Sub10](Submission_9_10.py) | Prep 2 | Gradient Boost - Decision Tree  | 0.828  | 0.78947  |
 
 
 
