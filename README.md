@@ -1,14 +1,30 @@
-**---------------------------------- IN PROGRESS -----------------------------------------**
 
+** ------------------------ IN PROGRESS --------------------------------------**
 # Kaggle: Titanic ML for Disaster
 
 The goal of this project is to predict who would survive onboard the famous Titanic disaster. This project is a popular Kaggle competition called 'Titanic: Machine Learning from Disaster'. https://www.kaggle.com/c/titanic 
 
 I used this project to practice my data handling skills in Python, aswell as gaining experience using the Scikit-Learn for a binary classification problem. 
 
+# Table of Contents
 
+<!--ts-->
+* [Introduction to the Challenge](#introduction-to-the-challenge)
+* [Data](#data)
+* [My Approach](#my-approach)
+* [Data Prep](#data-prep)
+* [Prep 1](#prep-1)
+* [Local files](#local-files)
+* [Remote files](#remote-files)
+* [Multiple files](#multiple-files)
+* [Combo](#combo)
+* [Auto insert and update TOC](#auto-insert-and-update-toc)
+* [GitHub token](#github-token)
+* [Tests](#tests)
+* [Dependency](#dependency)
+<!--te-->
 
-## Introduction to the challenge
+## Introduction to the Challenge
 
 The aim of this project is to use machine learning techniques to predict whether a person would have survived or not survived the titanic disaster. 1502 out of 2224 passengers and crew onboard the Titanic died. A training dataset is provided including whether each person survived. A Test dataset is also provided but without any indication of survival. The final score is determined by what percentage are correctly predicted to have survived. 
 
@@ -125,11 +141,27 @@ Learning curves for each submission can be found in the Figures Folder.
 | [Sub9](Submission_9_10.py)  | Prep 2 | Ada Boost - Decision Tree  | 0.816  | 0.72727  |
 | [Sub10](Submission_9_10.py) | Prep 2 | Gradient Boost - Decision Tree  | 0.828  | 0.78947  |
 
-
-
 ## Repository Layout
 
-The scripts at base level named 'Submission 1', 'Submission 2', etc. are the scripts run the generate my Kaggle submissions. 
+- [Archive_Code](\Archive_Code) contains old code. Please don't expect these files to run without errors and these were not used for any submissions. 
+
+- [Figures](\Figures) include pictures taken throughout the project. Hopefully these files are self explanatory. All the submissions learning curves can be found in the [Learning_Curve](Figures/Learning_Curve) folder. Pictures of the decision trees made in [submission 2](Submission_2) and [submission 7](Submission_6_7_8) can be found in [Learning_Curve](Figures/Decision_Tree_Diagrams). 
+
+- [Original_Data](\Original_Data) contains the data downloaded from the Kaggle website (https://www.kaggle.com/c/titanic/data). This folder will have to be in the same relative position to the submissions files for the paths to work without editing. 
+
+- [Submissions](\Submissions) contains the submission files submitted to the Kaggle competition. 10 files, one for each submission. 
+
+- [Feature_Engineering.py](Feature_Engineering.py) contains the code to implement [Prep 2](#prep-2) with some extra analysis. The function used in the submission scripts can be found in [MLFunLib.py](MLFunLib.py) and is a streamlined version of this file. 
+
+- [PCA.py](PCA.py) contains simple PCA of the data. This was not used in submission attempts.
+
+- 'Submission 1', 'Submission 2', etc. are the scripts run the generate my Kaggle submissions. They are constistently layed out and include a detailed description of what the file aims to accomplish. These files generate the submissions *.csv files found in [Submissions](\Submissions). The Submissions scripts call on functions stored in the [MLFunLib.py](MLFunLib.py) file.
+
+## Final Thoughts 
+
+My goals for this project were to practice manipulating simple datasets in python, experiment with Kaggle competitions and explore a wide range of machine learning algorithms. I game myself 2 weeks to do this and am happy with what has been achieved in this time. 
+
+If I had more time, I would experiment with further classification evaluation techniques to assess where my models were struggling. I would also put together a series of data visualisation images. 
 
 ## Author
 
@@ -139,6 +171,6 @@ Edwin Brown - Previously a geophysicist but looking to transition into a more fo
 
 This project is licensed under the MIT License. See the [LICENSE.md](LICENSE.md) file for details. 
 
-# Acknowledgments
+## Acknowledgments
 
 Kaggle for setting the challenge and providing the data in an easy to use format. 
