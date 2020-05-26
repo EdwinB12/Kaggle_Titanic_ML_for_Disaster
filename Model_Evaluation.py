@@ -25,6 +25,7 @@ from sklearn.impute import SimpleImputer
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn.ensemble import VotingClassifier, RandomForestClassifier, ExtraTreesClassifier, AdaBoostClassifier,GradientBoostingClassifier
 from sklearn.metrics import confusion_matrix, precision_score,recall_score,f1_score, precision_recall_curve, roc_curve, roc_auc_score, plot_confusion_matrix
+
 # Custom 
 import MLFunLib as mlib # Custom made library
 
@@ -266,7 +267,6 @@ def ROC_Curve_Plot(classifier,train_features,train_labels,method,sub_name,ax,fmt
 
 
 
-
 # ------------------------------ Evaluation Plots ----------------------------------------
 
 print('----------------------- Submission 1 --------------------------')
@@ -308,6 +308,7 @@ print('----------------------- Submission 10 --------------------------')
 Class_Metrics_SepPlot(sub10, train_features_prep2, target_features, 'Submission 10')
 Prob_Metrics_SepPlot(sub10,train_features_prep2,target_features,'predict_proba','Submission 10')
 print('\n')
+
 
 # Multiple ROC Curves on a single axis
 
