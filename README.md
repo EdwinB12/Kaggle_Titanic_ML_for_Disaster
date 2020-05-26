@@ -15,7 +15,8 @@ I used this project to practice my data handling skills in Python, aswell as gai
   * [Data Prep](#data-prep)
     * [Prep 1](#prep-1)
     * [Prep 2](#prep-2)
-  * [Training and Evaluation](#training-and-evaluation)
+  * [Training](#training)
+  * [Model Evaluation](#model-evaluation)
 * [Submissions and Scores](#submissions-and-scores)
 * [Final Thoughts ](#final-thoughts)
 * [Author](#author)
@@ -99,12 +100,11 @@ Any missing values were imputed using the most common value. Approximately 10% o
 Standardize Scaling was applied where appropriate, although decision trees were most used for training and therefore scaling was not required. 
 Ordinal Encoding was often adequate for this data although OneHotEncoding is easily applied if thought to be more suitable. 
 
-### Training and Evaluation
+### Training
 
 Training generally consisted of a grid search for optimal learning parameters for the chosen algorithm using 5 fold cross validation. 
 A number of learning algorithms were tested included a number of ensemble and boosting methods. 
 The trained models were assessed by looking at cross validation accuracy scores aswell as training curves. 
-*Further validation work is required, including an assessment of precision, recall and ROC curves.* 
 
 The explored algorithms were: 
 - Logistic regression with SGD
@@ -114,6 +114,22 @@ The explored algorithms were:
 - Random Forest
 - Ada Boosting
 - Gradient Boosting 
+
+### Model Evaluation
+
+Model Evaluation was done after submission. Evaluation metrics were calculated using cross validation with a fold of 5. This ensures all predictions were 'clean' (made on unseen data).  
+
+- Confusion Matrices
+- Precision
+- Recall
+- F1 score
+- ROC curves
+- Area under ROC curves
+
+Most of these metrics look at the trade off between true negatives, true positives, false negatives and false positives. This is not too important for this project as we have no preference in this trade off. It would be possible to use these metrics to change the decision threshold (all submissions have used 0.5).
+
+Metric values and plots can be found in the [submissions](#submissions-and-scores) table and in the [Evaluation Folder](/Figures/Evaluation) respectively. [Model_Evaluation.py](Model_Evaluation.py) prints all these values to the screen for all submissions and creates the plots found in the figures folder. 
+
 
 ## Submissions and Scores
 
@@ -127,30 +143,34 @@ The following table summarises my current submissions:
 
 Learning curves for each submission can be found in the Figures Folder. 
 
-|   | Data Prep  | Algorithm  | Cross Val Score  | Kaggle Score  |
-|:-:|---|---|---|---|
-| [Sub1](Submission_1.py)  | Prep 1 | SVM  | 0.788 | 0.75119 |
-| [Sub2](Submission_2.py)  | Prep 1 | Decision Tree  | 0.811 | 0.76555  |
-| [Sub3](Submission_3_4.py)  | Prep 1 | 'Hard' Voting Ensemble Model - Sub 1 & 2   |  0.801 | 0.75119  |
-| [Sub4](Submission_3_4.py)  | Prep 1 | 'Soft' Voting Ensemble Model - Sub 1 & 2  | 0.800  | 0.75598 |
-| [Sub5](Submission_5.py)  | Prep 1 | Random Forest |0.808 | 0.77511  |
-| [Sub6](Submission_6_7_8.py)  | Prep 2 | SVM | 0.811  | 0.78468  |
-| [Sub7](Submission_6_7_8.py)  | Prep 2 | Decision Tree | 0.822  | 0.77511   |
-| [Sub8](Submission_6_7_8.py)  | Prep 2 | Random Forest  | 0.818  | 0.78947  |
-| [Sub9](Submission_9_10.py)  | Prep 2 | Ada Boost - Decision Tree  | 0.816  | 0.72727  |
-| [Sub10](Submission_9_10.py) | Prep 2 | Gradient Boost - Decision Tree  | 0.828  | 0.78947  |
+|   | Data Prep  | Algorithm  | Cross Val Score  | Kaggle Score  | Precision | Recall | Area under ROC|
+|:-:|---|---|---|---|---|---|---|
+| [Sub1](Submission_1.py)  | Prep 1 | SVM  | 0.788 | **0.75119** | 0.78| 0.68 | 0.82 |
+| [Sub2](Submission_2.py)  | Prep 1 | Decision Tree  | 0.811 | **0.76555**  | 0.78 | 0.66 | 0.85 |
+| [Sub3](Submission_3_4.py)  | Prep 1 | 'Hard' Voting Ensemble Model - Sub 1 & 2   |  0.801 | **0.75119**  | - | - | - |
+| [Sub4](Submission_3_4.py)  | Prep 1 | 'Soft' Voting Ensemble Model - Sub 1 & 2  | 0.800  | **0.75598** | - | - | - |
+| [Sub5](Submission_5.py)  | Prep 1 | Random Forest |0.808 | **0.77511**  | 0.79 | 0.66 | 0.86 |
+| [Sub6](Submission_6_7_8.py)  | Prep 2 | SVM | 0.811  | **0.78468**  | 0.79 | 0.69 | 0.84 |
+| [Sub7](Submission_6_7_8.py)  | Prep 2 | Decision Tree | 0.822  | **0.77511**  | 0.81 | 0.70 | 0.83 |
+| [Sub8](Submission_6_7_8.py)  | Prep 2 | Random Forest  | 0.818  | **0.78947**  | 0.83 | 0.67 | 0.86 |
+| [Sub9](Submission_9_10.py)  | Prep 2 | Ada Boost - Decision Tree  | 0.816  | **0.72727**  | 0.80 | 0.70 | 0.83 |
+| [Sub10](Submission_9_10.py) | Prep 2 | Gradient Boost - Decision Tree  | 0.828  | **0.78947**  | 0.89 | 0.63 | 0.86 |
 
 ## Repository Layout
 
 - [Archive_Code](/Archive_Code) contains old code. Please don't expect these files to run without errors and these were not used for any submissions. 
 
-- [Figures](/Figures) include pictures taken throughout the project. Hopefully these files are self explanatory. All the submissions learning curves can be found in the [Learning_Curve](Figures/Learning_Curve) folder. Pictures of the decision trees made in [submission 2](Submission_2) and [submission 7](Submission_6_7_8) can be found in [Learning_Curve](Figures/Decision_Tree_Diagrams). 
+- [Figures](/Figures) include pictures taken throughout the project. Hopefully these files are self explanatory. All the submissions learning curves can be found in the [Learning_Curve](Figures/Learning_Curve) folder. Pictures of the decision trees made in [submission 2](Submission_2) and [submission 7](Submission_6_7_8) can be found in [Decision_Tree_Diagrams folder](Figures/Decision_Tree_Diagrams). Scree plots and principal components cross plots can be found in the [PCA folder](Figures/PCA). The [Evaluation folder](/Figures/Evaluation) contains [confusion matrices](/Figures/Evaluation/Confusion_Matrices), [precision vs recall analysis](/Figures/Evaluation/Precision_Recall) and [ROC curves](/Figures/Evaluation/ROC).  
 
 - [Original_Data](/Original_Data) contains the data downloaded from the Kaggle website (https://www.kaggle.com/c/titanic/data). This folder will have to be in the same relative position to the submissions files for the paths to work without editing. 
 
 - [Submissions](\Submissions) contains the submission files submitted to the Kaggle competition. 10 files, one for each submission. 
 
 - [Feature_Engineering.py](Feature_Engineering.py) contains the code to implement [Prep 2](#prep-2) with some extra analysis. The function used in the submission scripts can be found in [MLFunLib.py](MLFunLib.py) and is a streamlined version of this file. 
+
+- [MLFunLib.py](MLFunLib.py) contains custom made functions called by the other scripts. 
+
+- [Model_Evaluation.py](Model_Evaluation.py) calculates and plots a combination of evaluation methods. Values can be found in the [submissions](#submissions-and-scores) table. Figures can be found in [Evaluation Folder](/Figures/Evaluation). 
 
 - [PCA.py](PCA.py) contains simple PCA of the data. This was not used in submission attempts.
 
@@ -160,7 +180,6 @@ Learning curves for each submission can be found in the Figures Folder.
 
 My goals for this project were to practice manipulating simple datasets in python, experiment with Kaggle competitions and explore a wide range of machine learning algorithms. I game myself 2 weeks to do this and am happy with what has been achieved in this time. 
 
-If I had more time, I would experiment with further classification evaluation techniques to assess where my models were struggling. I would also put together a series of data visualisation images. 
 
 ## Author
 
