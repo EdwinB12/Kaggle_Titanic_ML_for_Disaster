@@ -1,5 +1,3 @@
-
-** ------------------------ IN PROGRESS --------------------------------------**
 # Kaggle: Titanic ML for Disaster
 
 The goal of this project is to predict who would survive onboard the famous Titanic disaster. This project is a popular Kaggle competition called 'Titanic: Machine Learning from Disaster'. https://www.kaggle.com/c/titanic 
@@ -164,7 +162,7 @@ Learning curves for each submission can be found in the Figures Folder.
 
 - [Original_Data](/Original_Data) contains the data downloaded from the Kaggle website (https://www.kaggle.com/c/titanic/data). This folder will have to be in the same relative position to the submissions files for the paths to work without editing. 
 
-- [Submissions](\Submissions) contains the submission files submitted to the Kaggle competition. 10 files, one for each submission. 
+- [Submissions](/Submissions) contains the submission files submitted to the Kaggle competition. 10 files, one for each submission. 
 
 - [Feature_Engineering.py](Feature_Engineering.py) contains the code to implement [Prep 2](#prep-2) with some extra analysis. The function used in the submission scripts can be found in [MLFunLib.py](MLFunLib.py) and is a streamlined version of this file. 
 
