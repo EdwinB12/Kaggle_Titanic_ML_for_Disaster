@@ -4,7 +4,7 @@ Created on Sun May 17 14:14:40 2020
 
 Data Vis Testing
 
-Script for Experimenting with data visualisation and PCA.  
+Principal Components Analysis (PCA) on Prep1 and Prep2.  
 
 @author: edwin
 """
@@ -34,7 +34,7 @@ print('\n')
 print('--------------- Start --------------------')
 print('\n' '\n')
 start=time.time()
-#%%
+
 
 # ------------------------------ Prep 1 ---------------------------------------
 
@@ -78,6 +78,7 @@ train_features_prep = full_pipeline.fit_transform(train_features)
 test_features_prep = full_pipeline.fit_transform(test_features)
 
 
+
 # ----------------------------- PCA Analysis ---------------------------------
 
 # Printing variance ratio's
@@ -86,14 +87,18 @@ pca.fit(train_features_prep)
 print('Prep1:' , pca.explained_variance_ratio_) # Printing variance ratios
 
 # Plotting Scree Plot
-mlib.Scree_Plot(train_features_prep)
+fig,ax = plt.subplots(figsize= (12,8))
+ax.set_title('Prep 1: Scree Plot')
+mlib.Scree_Plot(train_features_prep,ax)
 
 # Scatter Matrix of PCs
-mlib.PC_CrossPlotting_Color(train_features_prep, target_features)
+g = mlib.PC_CrossPlotting_Color(train_features_prep, target_features,ax)
+g.fig.suptitle('Prep 1: Principal Component Cross Plot ',y=1.04,fontsize='xx-large')
 
 
 
-#%% ----------------------------- Prep 2 ----------------------------------------
+
+#----------------------------- Prep 2 ----------------------------------------
 
 # Read Train and Test Datasets and save off original copies
 train_path = 'Original_Data/train.csv'
@@ -139,6 +144,8 @@ test_features_prep = full_pipeline_train.fit_transform(test_features)
 
 
 
+
+
 # ---------------------------------------- PCA Prep 2 -------------------------
 
 # Printing variance ratio's
@@ -147,10 +154,14 @@ pca.fit(train_features_prep)
 print('Prep 2:' ,pca.explained_variance_ratio_) # Printing variance ratios
 
 # Plotting Scree Plot
-mlib.Scree_Plot(train_features_prep)
+fig,ax = plt.subplots(figsize= (12,8))
+ax.set_title('Prep 2: Scree Plot')
+mlib.Scree_Plot(train_features_prep,ax)
 
-# Cross plot of all principal components
-mlib.PC_CrossPlotting_Color(train_features_prep, target_features)
+# Scatter Matrix of PCs
+g = mlib.PC_CrossPlotting_Color(train_features_prep, target_features,ax)
+g.fig.suptitle('Prep 2: Principal Component Cross Plot ',y=1.04,fontsize='xx-large')
+
 
 # # Form prepped data into df if required. 
 # corr_df = pd.DataFrame(data = train_features_prep, columns = post_transform_test_features)
@@ -164,8 +175,7 @@ print('Script runtime:', (time.time()-start)/60)
 print('\n' '\n')
 print('----------------- End --------------------')
 
-# -------------------------------------------------------------------------#
-#---------------------------------------------------------------------------
+
 
 
 # -------------------------- Bits and Bobs --------------------------------

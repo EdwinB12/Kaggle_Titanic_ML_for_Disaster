@@ -130,28 +130,28 @@ tree_clf = DecisionTreeClassifier(random_state=42)
 rfc = RandomForestClassifier(random_state=42)
 
 # Setting up grid searches
-param_grid_svm = [
-    {'kernel':['rbf','linear','poly'],'C':[0.1,1,10,100,1000],'degree':[3,4,5,10]}]
-
-# # Result of parameter search - Turn on if you want to skip param search
 # param_grid_svm = [
-#     {'C': 0.1, 'degree': 3, 'kernel': 'poly'}]
+#     {'kernel':['rbf','linear','poly'],'C':[0.1,1,10,100,1000],'degree':[3,4,5,10]}]
 
-param_grid_tree = [
-    {'max_depth':[1,3,5,10,15,20,None],'min_samples_split':[2,5,10,20,40],
-     'min_samples_leaf':[1,5,10],'criterion':['gini','entropy']}]
-   
-# # Result of parameter search - Turn on if you want to skip param search
+# Result of parameter search - Turn on if you want to skip param search
+param_grid_svm = [
+    {'C': [0.1], 'degree': [3], 'kernel': ['poly']}]
+
 # param_grid_tree = [
-#     {'criterion': 'entropy', 'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 5}]
+#     {'max_depth':[1,3,5,10,15,20,None],'min_samples_split':[2,5,10,20,40],
+#      'min_samples_leaf':[1,5,10],'criterion':['gini','entropy']}]
+   
+# Result of parameter search - Turn on if you want to skip param search
+param_grid_tree = [
+    {'criterion': ['entropy'], 'max_depth': [10], 'min_samples_leaf':[ 1], 'min_samples_split': [5]}]
  
-param_grid_rfc = [
-    {'n_estimators':[100,200,400,600,800],'max_depth':[1,3,5,10,20,40],'min_samples_leaf':[1,5,10],
-      'max_leaf_nodes': [None,8,16,32,64]}]   
-
-## Result of parameter search - Turn on if you want to skip param search - ADVISE TURNING ON AS THIS TAKES A WHILE. 
 # param_grid_rfc = [
-#     {'max_depth': 5, 'max_leaf_nodes': 16, 'min_samples_leaf': 1, 'n_estimators': 400}]  
+#     {'n_estimators':[100,200,400,600,800],'max_depth':[1,3,5,10,20,40],'min_samples_leaf':[1,5,10],
+#       'max_leaf_nodes': [None,8,16,32,64]}]   
+
+# Result of parameter search - Turn on if you want to skip param search - ADVISE TURNING ON AS THIS TAKES A WHILE. 
+param_grid_rfc = [
+    {'max_depth': [5], 'max_leaf_nodes': [16], 'min_samples_leaf': [1], 'n_estimators': [400]}]  
 
 # SVM
 grid_search_svm = GridSearchCV(svm_clf, param_grid_svm, cv=5, scoring = 'accuracy', return_train_score = True)
@@ -179,6 +179,19 @@ print('\n')
 print('RFC Best Params: ' , grid_search_rfc.best_params_)
 print('RFC Best Score: ' , grid_search_rfc.best_score_ )
 
+
+# -------------------------- Save Best Tree as a png -------------------------------------
+
+export_graphviz( 
+    grid_search_tree.best_estimator_,out_file='Figures/Decision_Tree_Diagrams/Submission_7_Tree.dot',
+    feature_names = post_transform_train_features,
+    class_names = 'Survived',
+    rounded=True,
+    filled=True
+    )
+
+(graph,) = pydot.graph_from_dot_file('Figures/Decision_Tree_Diagrams/Submission_7_Tree.dot')
+graph.write_png('Figures/Decision_Tree_Diagrams/Submission_7_Tree.png')
 
 
 # --------------- Plotting Learning Curve: Submission 6 only  -----------------

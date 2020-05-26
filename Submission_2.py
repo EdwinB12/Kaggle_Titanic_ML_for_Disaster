@@ -144,9 +144,9 @@ print('Tree clf Best Score: ' , grid_search.best_score_ )
 print('Tree clf Boosting Done!')
 
 # #Output scores for each combination of parameters - Can be turned off it wished
-# cvres = grid_search.cv_results_
-# for mean_score,params in zip(cvres['mean_test_score'],cvres[ 'params']):
-#     print(mean_score , params)
+cvres = grid_search.cv_results_
+for mean_score,params in zip(cvres['mean_test_score'],cvres[ 'params']):
+     print(mean_score , params)
 
 
 

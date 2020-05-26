@@ -170,7 +170,7 @@ def Pred_to_Kaggle_Format(predictions,csv_path):
     
 # ------------------------------ Scree plot --------------------------------------------------------
 
-def Scree_Plot(data,n_components=None):
+def Scree_Plot(data,ax,n_components=None):
     '''
     Plots scree plot of principal components and their respective variance ratios. 
 
@@ -195,9 +195,7 @@ def Scree_Plot(data,n_components=None):
         x.append('PC' + str(i))
         
     # Plotting
-    fig,ax = plt.subplots()
     ax.bar(x,y)
-    ax.set_title('Scree Plot')
     ax.set_xlabel('Principal Components')
     ax.set_ylabel('Variance Ratio')
     ax.spines['right'].set_visible(False) # Removing right and top spines
@@ -208,7 +206,7 @@ def Scree_Plot(data,n_components=None):
 #--------------------- Plot Principal Components Scatter Matrix ------------------------------------    
     
     
-def PC_CrossPlotting_Color(train_data,target_data,n_components=None): 
+def PC_CrossPlotting_Color(train_data,target_data,ax,n_components=None): 
     '''
     Produces scatter matrix of principal components derived from the training data. 
     The datapoints will be coloured by their respective target feature value. 
@@ -244,9 +242,9 @@ def PC_CrossPlotting_Color(train_data,target_data,n_components=None):
     df = pd.DataFrame(data =df_values, columns = x )
     
     # Plotting
-    sns.set(style="ticks")
-    sns.pairplot(df, hue='hue_var')
-   
+    g = sns.set(style="ticks")
+    g = sns.pairplot(df, hue='hue_var')
+    return g
 #----------------------------------------------------------------------------------------------------
 # --------------- Function to perform Feature Engineering on a dataframe ----------------------------
     
