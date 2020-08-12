@@ -2,7 +2,7 @@
 
 The goal of this project is to predict who would survive onboard the famous Titanic disaster. This project is a popular Kaggle competition called 'Titanic: Machine Learning from Disaster'. https://www.kaggle.com/c/titanic 
 
-I used this project to practice my data handling skills in Python, aswell as gaining experience using the Scikit-Learn for a binary classification problem. 
+I used this project to practice my data handling skills in Python, aswell as gaining experience using the Scikit-learn library for a binary classification problem. 
 
 # Table of Contents
 
